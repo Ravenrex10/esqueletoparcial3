@@ -1,2 +1,8 @@
-<app-navbar></app-navbar>
-<router-outlet></router-outlet>
+<div *ngIf="!loggedIn">
+    <app-oauth></app-oauth>
+</div>
+
+<div *ngIf="loggedIn">
+    <app-navbar></app-navbar>
+    <router-outlet></router-outlet>
+</div>

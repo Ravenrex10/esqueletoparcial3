@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { NavbarComponent } from './features/navbar/navbar.component';
@@ -12,7 +12,14 @@ import { HttpClientModule } from '@angular/common/http';
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
-export class AppComponent {
+export class AppComponent implements OnInit{
   title = 'parcial3';
   loggedIn : any;
+  token = localStorage.getItem("token");
+
+  ngOnInit(): void {
+    if(this.token!=null && this.token!=undefined){
+      this.loggedIn = true;
+    }
+  }
 }

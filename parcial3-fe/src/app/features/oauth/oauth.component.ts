@@ -19,16 +19,22 @@ export class OauthComponent{
   constructor(private authService: SocialAuthService, private router: Router, private oauthService: OauthService) { }
 
   ngOnInit() {
+    
     this.authService.authState.subscribe((user) => {
+      console.log("AAAAAAA")
       this.user = user;
       this.loggedIn = (user != null);
       if (user && user.idToken) {
-        this.oauthService.verifyToken(user.idToken);
+        this.oauthService.verifyToken(user);
       }
     });
   }
 
   signOut(): void {
     this.authService.signOut();
+    localStorage.removeItem("token");
+    localStorage.removeItem("email");
+    localStorage.removeItem("name");
+    localStorage.removeItem("photoUrl");
   }
 }
