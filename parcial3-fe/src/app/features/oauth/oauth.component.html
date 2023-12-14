@@ -1,32 +1,28 @@
-  <!-- Function to handle the JWT response -->
-  <script>
-    async function handleAuth(response) {
-        console.log("Hola");
-      //Changed the above URL where you want user to be redirected
+
+  <!--<script>
+    window.onload = function () {
+      google.accounts.id.initialize({
+        client_id: '739979864172-bbrds0insroblueqf3grvncjuj4m3dca.apps.googleusercontent.com',
+        callback: handleCredentialResponse
+      });
+
+      google.accounts.id.renderButton(
+        document.getElementById("login"),
+        { theme: "outline", size: "large"}
+      );
+    };
+
+    function handleCredentialResponse(respose){
+      console.log(response);
     }
-  </script>
+  </script>-->
+  
 
 <div class="container">
     <div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
         <div class="login-container">
             <h1 class="display-3">Inicia sesión</h1>
-            <div id="g_id_onload"
-                data-client_id="739979864172-bbrds0insroblueqf3grvncjuj4m3dca.apps.googleusercontent.com"
-                data-context="signin"
-                data-ux_mode="popup"
-                data-callback="handleAuth"
-                data-auto_prompt="false">
-            </div>
-
-            <div class="g_id_signin"
-                data-type="standard"
-                data-shape="rectangular"
-                data-theme="outline"
-                data-text="signin_with"
-                data-size="large"
-                data-logo_alignment="left">
-            </div>
-
+            <asl-google-signin-button type='standard' size='medium'></asl-google-signin-button>
         </div>
     </div>
 </div>
