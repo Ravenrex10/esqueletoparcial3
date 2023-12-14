@@ -37,4 +37,7 @@ export class OauthComponent{
     localStorage.removeItem("name");
     localStorage.removeItem("photoUrl");
   }
+  handleAuth(): void{
+    console.log("test");
+  }
 }

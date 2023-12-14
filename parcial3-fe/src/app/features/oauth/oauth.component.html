@@ -1,3 +1,11 @@
+  <!-- Function to handle the JWT response -->
+  <script>
+    async function handleAuth(response) {
+        console.log("Hola");
+      //Changed the above URL where you want user to be redirected
+    }
+  </script>
+
 <div class="container">
     <div class="d-flex align-items-center justify-content-center" style="min-height: 100vh;">
         <div class="login-container">
@@ -6,7 +14,8 @@
                 data-client_id="739979864172-bbrds0insroblueqf3grvncjuj4m3dca.apps.googleusercontent.com"
                 data-context="signin"
                 data-ux_mode="popup"
-                data-itp_support="true">
+                data-callback="handleAuth"
+                data-auto_prompt="false">
             </div>
 
             <div class="g_id_signin"
@@ -17,6 +26,7 @@
                 data-size="large"
                 data-logo_alignment="left">
             </div>
+
         </div>
     </div>
 </div>
