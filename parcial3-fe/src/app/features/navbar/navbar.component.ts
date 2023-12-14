@@ -27,4 +27,12 @@ export class NavbarComponent{
     location.reload();
   }
 
+  redirigirSubirImagen(): void{
+    this.router.navigate(['/upload']);
+  }
+
+  redirigirMapa(): void{
+    this.router.navigate(['/map'])
+  }
+
 }
