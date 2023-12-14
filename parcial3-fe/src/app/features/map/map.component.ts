@@ -26,6 +26,7 @@ export class MapComponent implements OnInit{
     //this.updateMarkers([this.marker1, this.marker2])
   }
 
+  /**Inicia un mapa con la localización enviada por atributo.*/
   private initMap(location: { latitude: number; longitude: number }): void {
 
     this.map = L.map('map').setView([this.location.latitude, this.location.longitude], 200);
@@ -34,6 +35,8 @@ export class MapComponent implements OnInit{
     maxZoom: 15,
     attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'  
     }).addTo(this.map);
+
+    //POSIBLES MARCADORES QUE PODEIS PROBAR:
   
     /*L.marker([location.latitude, location.longitude])
       .addTo(map)
@@ -46,7 +49,7 @@ export class MapComponent implements OnInit{
       radius: 500
     }).addTo(map);*/
   }
-
+  /**Crea un marker en cada posición enviada como array*/
   updateMarkers(markerLocations: { latitude: number; longitude: number }[]): void{
     for(const marker of markerLocations){
       this.location = marker;

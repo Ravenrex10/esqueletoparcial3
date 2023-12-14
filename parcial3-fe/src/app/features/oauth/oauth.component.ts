@@ -1,50 +1,34 @@
+import { SocialAuthService, SocialUser } from '@abacritt/angularx-social-login';
+import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component } from '@angular/core';
-
-declare var google: any;
+import { Router } from '@angular/router';
+import { OauthService } from '../../services/oauth.service';
 
 @Component({
   selector: 'app-oauth',
   standalone: true,
-  imports: [],
+  imports: [CommonModule],
   templateUrl: './oauth.component.html',
-  styleUrl: './oauth.component.css'
+  styleUrl: './oauth.component.css',
+  providers: [OauthService]
 })
-export class OauthComponent implements AfterViewInit{
+export class OauthComponent{
   idToken: any;
-  constructor() { }
+  user: SocialUser = new SocialUser;
+  loggedIn: any;
+  constructor(private authService: SocialAuthService, private router: Router, private oauthService: OauthService) { }
 
-  ngAfterViewInit(): void {
-    google.accounts.id.initialize({
-      client_id: "236025958894-l05tha7iovc0ool81upch4i6gi91npe8.apps.googleusercontent.com",
-      callback: (response: any) => this.handleGoogleSignIn(response)
+  ngOnInit() {
+    this.authService.authState.subscribe((user) => {
+      this.user = user;
+      this.loggedIn = (user != null);
+      if (user && user.idToken) {
+        this.oauthService.verifyToken(user.idToken);
+      }
     });
-    google.accounts.id.renderButton(
-      document.getElementById("buttonDiv"),
-      { size: "large", type: "standard", shape: "pill" }  // customization attributes
-    );
   }
 
-  handleGoogleSignIn(response: any) {
-    console.log(response.credential);
-
-    // This next is for decoding the idToken to an object if you want to see the details.
-    let base64Url = response.credential.split('.')[1];
-    let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-    let jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-    }).join(''));
-    console.log(JSON.parse(jsonPayload));
-
-    //this.idToken = google.requestAccessToken();
-    this.idToken = google.accounts.oauth2;
-    console.log(this.idToken);
-
-
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', 'localhost:8000/logged');
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() { console.log('Signed in as: ' + xhr.responseText); };
-    xhr.send('idtoken=' + this.idToken)
-    console.log('Token enviado')
+  signOut(): void {
+    this.authService.signOut();
   }
 }
