@@ -12,7 +12,7 @@ export class EntidadService {
 
   constructor(private http: HttpClient) { }
 
-  urlBackend = 'http://13.50.229.85/:8000'
+  urlBackend = 'http://13.50.229.85:8000'
 
   codigoPostal : CodigoPostal = {
     codigoPostal: ""
