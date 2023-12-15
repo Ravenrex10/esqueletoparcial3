@@ -1,0 +1,10 @@
+<div *ngFor="let entidad of listaEntidades">
+    <div class="container">
+        <h3>Nombre: {{entidad.nombre}}</h3>
+        <h5>Fecha: {{entidad.date}}</h5>
+        <h5>Boolean: {{entidad.boolean}}</h5>
+        <h5>Double: {{entidad.double}}</h5>
+        <h5>inte: {{entidad.inte}}</h5>
+        <button class="btn btn-primary" (click)="redirectEntidad(entidad._id)">Ver informacion</button>
+    </div>
+</div>

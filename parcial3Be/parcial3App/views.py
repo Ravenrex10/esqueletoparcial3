@@ -1,3 +1,4 @@
+from django.http import HttpResponse
 from django.shortcuts import render
 #from parcial3App.serializers import  ProductoSerializer
 
@@ -32,7 +33,7 @@ import cloudinary.uploader
 my_client = pymongo.MongoClient('mongodb+srv://usuario:usuario@parcial3.jo5shgi.mongodb.net')
 
 # Nombre de la base de datos
-dbname = my_client['Parcial3']
+dbname = my_client['parcial3']
 
 # Colecciones
 #collection_productos = dbname["productos"]
@@ -101,11 +102,70 @@ def upload_image(request):
 
 # ---------------------------------------- CRUD ------------------------------------- #
 
-@api_view(['GET'])
+@api_view(['GET', 'POST'])
+def entidades(request):
+    if request.method == 'GET':
+        prueba = list(collection_entidades.find({}))        
+        for p in prueba:
+            p['_id'] = str(ObjectId(p.get('_id',[])))
+
+        prueba_serializer = EntidadSerializer(data=prueba, many= True)
+        if prueba_serializer.is_valid():
+            json_data = prueba_serializer.data
+            return Response(json_data, status=status.HTTP_200_OK)
+        else:
+            return Response(prueba_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+    elif request.method == 'POST':
+        serializer = EntidadSerializer(data=request.data)
+        if serializer.is_valid():
+            prueba = serializer.validated_data
+            #Probablemente esto se use para el oauth
+            # existing_user = collection_prueba.find_one({'_id': prueba['_id']})
+            # if existing_user is not None:
+            #     return Response({"error": "Ya existe un usuario con ese correo."},
+            #                     status=status.HTTP_400_BAD_REQUEST)
+            prueba['_id'] = ObjectId()
+            prueba['date'] = datetime.now()
+            prueba['photoUrls'] = []
+            prueba['objid'] = ObjectId(prueba['objid'])
+            result = collection_entidades.insert_one(prueba)
+            if result.acknowledged:
+                return Response({"message": "Producto creado con éxito."}, status=status.HTTP_201_CREATED)
+            else:
+                return Response({"error": "Algo salió mal. Producto no creado."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
 def entidad_view(request, idEntidad):
-    entidad = collection_entidades.find_one({'_id': ObjectId(idEntidad)})
-    entidad['_id'] = str(ObjectId(entidad.get('_id', [])))
-    serializer = Enç(data=entidad)
-    if serializer.is_valid():
-        return Response(serializer.data, status=status.HTTP_200_OK)
-    return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    if request.method == 'PUT':
+        serializer = EntidadSerializer(data=request.data)
+        if serializer.is_valid():
+            prueba = serializer.validated_data
+            prueba['_id'] = ObjectId(idEntidad)
+            result = collection_entidades.replace_one({'_id': ObjectId(idEntidad)}, prueba)
+            if result.acknowledged:
+                return Response({"message": "Usuario actualizado con éxito",},
+                                status=status.HTTP_200_OK)
+            else:
+                return Response({"error": "Algo salió mal. Usuario no actualizado."},
+                                status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == 'GET':
+            p = collection_entidades.find_one({'_id': ObjectId(idEntidad)})
+            p['_id'] = str(ObjectId(p.get('_id', [])))
+
+            serializer = EntidadSerializer(data=p)
+            if serializer.is_valid():
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+    elif request.method == 'DELETE' :
+        delete_data = collection_entidades.delete_one({'_id': ObjectId(idEntidad)})
+        if delete_data.deleted_count == 1:
+            return Response({"mensaje": "Usuario eliminado con éxito"}, status=status.HTTP_200_OK)
+        else:
+            return Response({"ERROR": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)

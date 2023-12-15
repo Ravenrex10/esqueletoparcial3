@@ -32,7 +32,15 @@ export class NavbarComponent{
   }
 
   redirigirMapa(): void{
-    this.router.navigate(['/map'])
+    this.router.navigate(['/map']);
+  }
+
+  redirigirCrud(): void{
+    this.router.navigate(['/crud']);
+  }
+
+  redirigirInicio(): void{
+    this.router.navigate(['/']);
   }
 
 }
