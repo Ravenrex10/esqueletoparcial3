@@ -3,11 +3,12 @@ import { EntidadService } from '../../services/entidad.service';
 import { CommonModule } from '@angular/common';
 import { Entidad } from '../../interfaces/entidad';
 import { Router } from '@angular/router';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-lista',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './lista.component.html',
   styleUrl: './lista.component.css',
   providers: [EntidadService]
@@ -27,5 +28,11 @@ export class ListaComponent implements OnInit {
 
   redirectEntidad(idEntidad: string){
     this.router.navigate(['crud/'+idEntidad]);
+  }
+
+  buscar(data: any){
+    this.entidadService.getEventosProximos(data.codigoPostal).subscribe(entidades => {
+      this.listaEntidades = entidades;
+    });
   }
 }

@@ -6,8 +6,12 @@ class TokenSerializer(serializers.Serializer):
 class EntidadSerializer(serializers.Serializer):
     _id = serializers.CharField(max_length = 24, required=False)
     nombre = serializers.CharField()
-    date = serializers.DateTimeField(required=False)
-    double = serializers.FloatField()
-    boolean = serializers.BooleanField()
-    inte = serializers.IntegerField()
-    photoUrls = serializers.ListField()
+    timestamp = serializers.DateTimeField(required=False)
+    lugar = serializers.CharField()
+    lat = serializers.FloatField()
+    lon = serializers.FloatField()
+    organizador = serializers.CharField()
+    imagen = serializers.CharField()
+
+class CodigoSerializer(serializers.Serializer):
+    codigoPostal = serializers.CharField()

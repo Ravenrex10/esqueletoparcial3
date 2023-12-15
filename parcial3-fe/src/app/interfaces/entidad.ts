@@ -1,8 +1,10 @@
 export interface Entidad {
+    _id: string;
     nombre: string;
-    photoUrls: Array<string>;
-    date: Date;
-    boolean: Boolean;
-    double: Number;
-    inte: Number;
+    timestamp: Date;
+    lugar: string;
+    lat: Number;
+    lon: Number;
+    organizador: string;
+    imagen: string;
 }

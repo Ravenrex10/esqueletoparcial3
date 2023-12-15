@@ -1,8 +1,3 @@
-<h3>Nombre: {{entidad.nombre}}</h3>
-<h5>Fecha: {{entidad.date}}</h5>
-<h5>Boolean: {{entidad.boolean}}</h5>
-<h5>Double: {{entidad.double}}</h5>
-<h5>inte: {{entidad.inte}}</h5>
 
 
 <form #formularioEntidad="ngForm" (ngSubmit) = "editar(formularioEntidad.value)">
@@ -12,16 +7,29 @@
             <input name="nombre" ngModel type="text" class="form-control" placeholder="{{entidad.nombre}}">
         </div>
         <br>
-        <label for="date">Fecha:</label>
+        <label for="timestamp">Fecha:</label>
         <div class="input-group">
-            <input name="date" ngModel type="datetime-local" class="form-control" placeholder="{{entidad.date}}">
+            <input name="timestamp" ngModel type="datetime-local" class="form-control" placeholder="{{entidad.timestamp}}">
         </div>
         <br>
-        <label for="double">Double:</label>
+        <label for="organizador">Organizador:</label>
         <div class="input-group">
-            <input name="double" ngModel type="text" class="form-control" placeholder="{{entidad.double}}">
+            <input name="organizador" ngModel type="text" class="form-control" placeholder="{{entidad.organizador}}">
         </div>
-
-        <button type="submit" class="btn btn-primary mt-3">Editar</button>
+        <br>
+        <label for="lugar">Lugar:</label>
+        <div class="input-group">
+            <input name="lugar" ngModel type="text" class="form-control" placeholder="{{entidad.lugar}}">
+        </div>
+        <br>
+        <div *ngIf="loggedIn">
+            <button type="submit" class="btn btn-primary mt-3">Editar</button>
+        </div>
     </div>
 </form>
+<br>
+
+<button class="btn btn-primary" (click)="redirectMapa()">Ver mapa</button>
+<app-upload-photo></app-upload-photo>
+<img src="{{entidad.imagen}}">
+<button class="btn btn-danger" (click)="eliminar()">Eliminar</button>

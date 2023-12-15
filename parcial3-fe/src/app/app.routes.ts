@@ -9,7 +9,7 @@ import { InfoEntidadComponent } from './features/info-entidad/info-entidad.compo
 export const routes: Routes = [
     {
         path: '',
-        component: InicioComponent,
+        component: ListaComponent,
         title: 'Inicio'
     },
     {
@@ -21,11 +21,6 @@ export const routes: Routes = [
         path: 'upload',
         component: UploadPhotoComponent,
         title: 'Upload'
-    },
-    {
-        path: 'crud',
-        component: ListaComponent,
-        title: 'Lista'
     },
     {
         path:'crud/:idEntidad',

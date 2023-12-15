@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import { Entidad } from '../interfaces/entidad';
+import { CodigoPostal} from  '../interfaces/codigoPostal';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +14,25 @@ export class EntidadService {
 
   urlBackend = 'http://localhost:8000'
 
+  codigoPostal : CodigoPostal = {
+    codigoPostal: ""
+  }
+
   getEntidadInfo(idEntidad: string): Observable<any> {
     const url = this.urlBackend + '/api/entidad/' + idEntidad + '/';
     return this.http.get<any>(url);
   }
 
-  uploadImage(idEntidad: string, datos: string):Observable<any> {
+  uploadImage(idEntidad: string, photoUrl: string):void {
     const url = this.urlBackend + '/api/entidad/' + idEntidad + '/';
-    return this.http.put(url, datos);
+    this.getEntidadInfo(idEntidad).subscribe(response =>{
+      response['imagen'] = photoUrl;
+      console.log(response);
+      console.log(photoUrl);
+      return this.http.put(url, response).subscribe(response => {
+        console.log(response);
+      });
+    });
   }
 
   editEntidad(idEntidad : string, entidad: Entidad): Observable<any> {
@@ -29,7 +41,7 @@ export class EntidadService {
     return this.http.put(url, entidad);
   }
 
-  deleteProducto(entidadId: string): Observable<any> {
+  deleteEntidad(entidadId: string): Observable<any> {
     const url = this.urlBackend + '/api/entidad/'+entidadId;
     return this.http.delete<any>(url);
   }
@@ -42,5 +54,18 @@ export class EntidadService {
   createEntidad(entidad: Entidad): Observable<Entidad> {
     const url = this.urlBackend + '/api/entidad';
     return this.http.post<Entidad>(url, entidad);
+  }
+
+  getEventosProximos(codigoPostal: any): Observable<any> {
+    const url = this.urlBackend + '/api/entidad/proximos';
+
+    this.codigoPostal.codigoPostal = codigoPostal; 
+    console.log(this.codigoPostal);
+    return this.http.post<any>(url, this.codigoPostal);
+  }
+
+  getCoordenadas(codigoPostal: any): Observable<any> {
+    const url = this.urlBackend + '/api/entidad/coordenadas/'+codigoPostal;
+    return this.http.get<any>(url);
   }
 }

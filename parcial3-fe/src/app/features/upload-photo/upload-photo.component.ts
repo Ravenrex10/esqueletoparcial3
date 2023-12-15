@@ -17,11 +17,14 @@ export class UploadPhotoComponent {
   selectedFiles: File[] = [];
   urls: any[] = [];
   fotos_subidas: boolean = false;
+  idEntidad = '';
 
   constructor(
     private http: HttpClient,
     private imagenService: ImageService,
-    private router: Router
+    private router: Router,
+    private entidadService: EntidadService,
+    private route: ActivatedRoute
   ) { }
   ngOnInit(): void {
     this.fotos_subidas = false;
@@ -42,6 +45,10 @@ export class UploadPhotoComponent {
           this.urls = response.urls;
           console.log(this.urls);
           this.fotos_subidas = true;
+          this.route.params.subscribe(params => {
+            this.idEntidad = params['idEntidad'];
+            this.entidadService.uploadImage(this.idEntidad, this.urls[0]);
+          });
         }
       });
     }

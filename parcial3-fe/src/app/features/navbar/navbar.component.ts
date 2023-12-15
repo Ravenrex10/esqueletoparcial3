@@ -12,11 +12,18 @@ import { Router } from '@angular/router';
   styleUrl: './navbar.component.css',
   providers: [OauthComponent]
 })
-export class NavbarComponent{
+export class NavbarComponent implements OnInit{
   loggedIn = false;
   token : any;
+  email: any;
 
   constructor(private authService: SocialAuthService, private router: Router) {}
+  ngOnInit(): void {
+    this.email = localStorage.getItem('email');
+    if(this.email !=null && this.email != undefined){
+      this.loggedIn = true;
+    }
+  }
 
   signOut(): void{
     this.authService.signOut();

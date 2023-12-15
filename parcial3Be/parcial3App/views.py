@@ -24,10 +24,13 @@ from pymongo import ReturnDocument
 
 from django.shortcuts import render, get_object_or_404
 
-from parcial3App.serializers import TokenSerializer, EntidadSerializer
+from parcial3App.serializers import TokenSerializer, EntidadSerializer, CodigoSerializer
 
 import cloudinary
 import cloudinary.uploader
+
+from geopy.geocoders import Nominatim
+from geopy.distance import geodesic
 
 # Conexión a la base de datos MongoDB
 my_client = pymongo.MongoClient('mongodb+srv://usuario:usuario@parcial3.jo5shgi.mongodb.net')
@@ -53,7 +56,7 @@ def oauth(request):
             try:
                 token = tokenData['idtoken']
                 # Specify the CLIENT_ID of the app that accesses the backend:
-                idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
+                #idinfo = id_token.verify_oauth2_token(token, requests.Request(), CLIENT_ID)
 
                 # Or, if multiple clients access the backend server:
                 # idinfo = id_token.verify_oauth2_token(token, requests.Request())
@@ -65,9 +68,9 @@ def oauth(request):
                 #     raise ValueError('Wrong hosted domain.')
 
                 # ID token is valid. Get the user's Google Account ID from the decoded token.
-                userid = idinfo['sub']
-                if userid:
-                    return Response({"userid": userid,},
+                #userid = idinfo['sub']
+                #if userid:
+                return Response({"token": token,},
                                     status=status.HTTP_200_OK)
             except ValueError:
                 # Invalid token
@@ -169,3 +172,38 @@ def entidad_view(request, idEntidad):
             return Response({"mensaje": "Usuario eliminado con éxito"}, status=status.HTTP_200_OK)
         else:
             return Response({"ERROR": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+        
+@api_view(['POST'])
+def eventos_proximos(request):
+    if request.method == 'POST':
+        serializer = CodigoSerializer(data=request.data)
+        if serializer.is_valid():
+            eventosProximos = []
+            codigo = serializer.validated_data
+            entidades = list(collection_entidades.find({}))
+
+            geolocator = Nominatim(user_agent="my_geocoder")
+            ubicacion = geolocator.geocode(codigo['codigoPostal'])
+
+            latCodigo = ubicacion.latitude
+            lonCodigo = ubicacion.longitude
+
+            for entidad in entidades:
+                if(abs(entidad['lat'] - latCodigo) <= 0.2 and abs(entidad['lon'] - lonCodigo) <= 0.2):
+                    eventosProximos.insert(entidad)
+            
+            #return Response({"eventos": eventosProximos})
+            return JsonResponse(eventos_proximos)
+
+@api_view(['GET'])
+def getCoordenadas(request, codigoPostal):
+    if request.method == 'GET':
+        geolocator = Nominatim(user_agent="my_geocoder")
+        ubicacion = geolocator.geocode(codigoPostal)
+        coordenadas = (ubicacion.latitude, ubicacion.longitude)
+
+        coordenadas = {
+            'latitud': f"{coordenadas[0]}",
+            'longitud': f"{coordenadas[1]}"
+        }
+        return JsonResponse(coordenadas, content_type='application/json', json_dumps_params={'ensure_ascii': False})

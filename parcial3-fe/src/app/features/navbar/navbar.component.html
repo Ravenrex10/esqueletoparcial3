@@ -6,20 +6,17 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <button class="nav-link" (click)="redirigirSubirImagen()">Subir una imagen</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" (click)="redirigirMapa()">Mapa</button>
-                </li>
-                <li class="nav-item">
-                    <button class="nav-link" (click)="redirigirCrud()">CRUD</button>
-                </li>
-            </ul>
-            <ul class="nav-item my-auto me-2 btn d-flex justify-content-end">
-                <button class="btn me-2 btn-outline-danger" (click)="signOut()" id="inicio">Cerrar sesión</button>
-            </ul>
+            <div *ngIf="loggedIn">
+                <ul class="nav-item my-auto me-2 btn d-flex justify-content-end">
+                    <button class="btn me-2 btn-outline-danger" (click)="signOut()" id="inicio">Cerrar sesión</button>
+                </ul>
+            </div>
+            <div *ngIf="!loggedIn">
+                <ul class="nav-item my-auto me-2 btn d-flex justify-content-end">
+                    <app-oauth></app-oauth>
+                </ul>
+            </div>
+            
         </div>
     </div>
 </nav>
