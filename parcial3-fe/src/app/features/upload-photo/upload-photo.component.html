@@ -2,5 +2,5 @@
 <input type="file" id="fileInput" accept="image/*" multiple (change)="onFileSelected($event)" class="form-control">
   <button *ngIf="!fotos_subidas" class="btn  mt-2" (click)="onButtonClicked()">Subir imágenes</button>
   <div *ngIf="fotos_subidas" class="alert alert-success mt-2" role="alert">
-    ¡Fotos subidas!
+    ¡Fotos subidas! (Actualiza la página)
   </div>

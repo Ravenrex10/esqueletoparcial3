@@ -11,7 +11,7 @@ import { MapComponent } from '../map/map.component';
 @Component({
   selector: 'app-info-entidad',
   standalone: true,
-  imports: [FormsModule, UploadPhotoComponent, MapComponent],
+  imports: [FormsModule, UploadPhotoComponent, MapComponent, CommonModule],
   templateUrl: './info-entidad.component.html',
   styleUrl: './info-entidad.component.css',
   providers: [EntidadService]

@@ -1,35 +1,41 @@
+<h3>Nombre: {{entidad.nombre}}</h3>
+<h5>Organizador: {{entidad.organizador}}</h5>
+<h5>Fecha: {{entidad.timestamp}}</h5>
+<div *ngIf="loggedIn">
+    <form #formularioEntidad="ngForm" (ngSubmit) = "editar(formularioEntidad.value)">
+        <div class="form-group">
+            <label for="nombre">Nombre:</label>
+            <div class="input-group">
+                <input name="nombre" ngModel type="text" class="form-control" placeholder="{{entidad.nombre}}">
+            </div>
+            <br>
+            <label for="timestamp">Fecha:</label>
+            <div class="input-group">
+                <input name="timestamp" ngModel type="datetime-local" class="form-control" placeholder="{{entidad.timestamp}}">
+            </div>
+            <br>
+            <label for="organizador">Organizador:</label>
+            <div class="input-group">
+                <input name="organizador" ngModel type="text" class="form-control" placeholder="{{entidad.organizador}}">
+            </div>
+            <br>
+            <label for="lugar">Lugar:</label>
+            <div class="input-group">
+                <input name="lugar" ngModel type="text" class="form-control" placeholder="{{entidad.lugar}}">
+            </div>
+            <br>
+            <div *ngIf="loggedIn">
+                <button type="submit" class="btn btn-primary mt-3">Editar</button>
+            </div>
+        </div>
+    </form>
+</div>
 
-
-<form #formularioEntidad="ngForm" (ngSubmit) = "editar(formularioEntidad.value)">
-    <div class="form-group">
-        <label for="nombre">Nombre:</label>
-        <div class="input-group">
-            <input name="nombre" ngModel type="text" class="form-control" placeholder="{{entidad.nombre}}">
-        </div>
-        <br>
-        <label for="timestamp">Fecha:</label>
-        <div class="input-group">
-            <input name="timestamp" ngModel type="datetime-local" class="form-control" placeholder="{{entidad.timestamp}}">
-        </div>
-        <br>
-        <label for="organizador">Organizador:</label>
-        <div class="input-group">
-            <input name="organizador" ngModel type="text" class="form-control" placeholder="{{entidad.organizador}}">
-        </div>
-        <br>
-        <label for="lugar">Lugar:</label>
-        <div class="input-group">
-            <input name="lugar" ngModel type="text" class="form-control" placeholder="{{entidad.lugar}}">
-        </div>
-        <br>
-        <div *ngIf="loggedIn">
-            <button type="submit" class="btn btn-primary mt-3">Editar</button>
-        </div>
-    </div>
-</form>
 <br>
-
 <button class="btn btn-primary" (click)="redirectMapa()">Ver mapa</button>
-<app-upload-photo></app-upload-photo>
+<div *ngIf="loggedIn">
+    <app-upload-photo></app-upload-photo>
+    <button class="btn btn-danger" (click)="eliminar()">Eliminar</button>
+</div>
 <img src="{{entidad.imagen}}">
-<button class="btn btn-danger" (click)="eliminar()">Eliminar</button>
+

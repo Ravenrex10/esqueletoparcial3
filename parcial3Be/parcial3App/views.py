@@ -191,8 +191,6 @@ def eventos_proximos(request):
             for entidad in entidades:
                 if(abs(entidad['lat'] - latCodigo) <= 0.2 and abs(entidad['lon'] - lonCodigo) <= 0.2):
                     eventosProximos.insert(entidad)
-            
-            #return Response({"eventos": eventosProximos})
             return JsonResponse(eventos_proximos)
 
 @api_view(['GET'])
